@@ -1,8 +1,6 @@
 name: Deploy Docker Image in Prod
 
 on:
-  release:
-    types: [released]
   push:
     branches:
       - 'release-v**'
