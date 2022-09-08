@@ -11,6 +11,10 @@ on:
     branches:
       - master
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version to deploy'
+        required: false
 
 jobs:
   build-and-deploy:
@@ -31,6 +35,7 @@ jobs:
         continue-on-error: true
 
       - name: Set DD RUM Version
+        if: inputs.version == null
         run: |
           echo "REACT_APP_DD_VERSION=${{ steps.node_release.outputs.release }}" | tr -d v >> $GITHUB_ENV;
         continue-on-error: true
