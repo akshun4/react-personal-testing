@@ -19,7 +19,7 @@ jobs:
 
       - name: Fetch release version from release name
         run: |
-          echo "ENVIRONMENT_VERSION=${{ GITHUB_REF_NAME }}" | tr -d 'release-/' >> $GITHUB_ENV;
+          echo "ENVIRONMENT_VERSION=${{ env.GITHUB_REF_NAME }}" | tr -d 'release-/' >> $GITHUB_ENV;
       
       - name: Set up Node.js version
         uses: actions/setup-node@v2
