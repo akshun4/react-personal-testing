@@ -1,4 +1,4 @@
-# Dockerized ReactJS application
+# Dockerized ReactJS application for Testing
 
 ![Docker plus React plus Codefresh](docker-reactjs-codefresh.jpg)
 
