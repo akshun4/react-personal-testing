@@ -16,7 +16,7 @@ To install dependencies
 ```
 yarn install 
 ```
-
+decommission all
 or
 
 ```
