@@ -1,0 +1,27 @@
+name: Deploy Docker Image in Prod
+
+on:
+  push:
+    branches:
+      - 'release-v**'
+      - 'release/v**'
+
+jobs:
+  build-and-deploy-to-acr:
+    runs-on: ubuntu-latest
+    environment:
+      name: prod
+    name: Build and Deploy API Image to ACR
+    steps:     
+      - uses: actions/checkout@v3
+
+      - name: Fetch release version from release name
+        run: |
+          echo "git fetch --prune --unshallow --tags"
+          echo "ENVIRONMENT_VERSION=v$(git describe --abbrev=0 --tags | sed 's/[^0-9.]*\([0-9.]*\).*/\1/')" >> $GITHUB_ENV;
+      
+      - name: Set up Node.js version
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
