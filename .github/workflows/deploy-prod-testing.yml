@@ -16,11 +16,6 @@ jobs:
     name: Build and Deploy API Image to ACR
     steps:     
       - uses: actions/checkout@v3
-
-      - run: |
-          echo ${{ env.GITHUB_REF_NAME }} 
-          echo ${{ env.GITHUB_REF }}
-          echo ${{ env.GITHUB_REF_TYPE }}
            
       - name: Fetch release version from release name
         run: |
