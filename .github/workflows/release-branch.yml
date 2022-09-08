@@ -19,13 +19,3 @@ jobs:
       - name: create release branch
         run: |
           git checkout -b release-${{ env.RELEASE_VERSION }} ${{ env.RELEASE_VERSION }}
-      
-      - name: Initialize mandatory git config
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email noreply@github.com
-
-      - name: push commit to release branch
-        run: |
-          git commit --allow-empty -m "Release branch ${{ env.RELEASE_VERSION }} created" 
-          git push origin release-${{ env.RELEASE_VERSION }}
