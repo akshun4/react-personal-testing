@@ -9,62 +9,7 @@ More details can be found in [the documentation page](https://codefresh.io/docs/
 
 ## Instructions
 
-To install dependencies 
-
-```
-yarn install 
-```
-
-or
-
-```
-npm install 
-```
-
-## To run tests
-
-```
-yarn test 
-```
-
-or
-
-```
-npm test 
-```
-
-## To run the webapp manually
-
-```
-yarn start 
-```
-
-or
-
-```
-npm start 
-```
-
-....and navigate your browser to  http://localhost:3000/
-
-## To create a docker image
-
-```
-docker build -t my-react-app .
-```
-
-
-## To run the docker image
-
-```
-docker run -p 80:80 my-react-app
-```
-
-
-## To use this project in Codefresh 
-
-There is also a [codefresh.yml](codefresh.yml) for easy usage with the [Codefresh](codefresh.io) CI/CD platform.
-
+All this is too extra stuuf
 
 Enjoy! Double contraditcions
 
