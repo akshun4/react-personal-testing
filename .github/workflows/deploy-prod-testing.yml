@@ -17,9 +17,14 @@ jobs:
     steps:     
       - uses: actions/checkout@v3
 
+      - run: |
+          echo ${{ env.GITHUB_REF_NAME }} 
+          echo ${{ env.GITHUB_REF }}
+          echo ${{ env.GITHUB_REF_TYPE }}
+           
       - name: Fetch release version from release name
         run: |
-          echo "ENVIRONMENT_VERSION=${{ env.GITHUB_REF_NAME }}" | tr -d 'release-/' >> $GITHUB_ENV;
+          echo "ENVIRONMENT_VERSION=${{ env.GITHUB_REF_NAME }}" | tr -d 'release/-'  >> $GITHUB_ENV;
       
       - name: Set up Node.js version
         uses: actions/setup-node@v2
