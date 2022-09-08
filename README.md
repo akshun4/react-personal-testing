@@ -66,12 +66,6 @@ docker run -p 80:80 my-react-app
 There is also a [codefresh.yml](codefresh.yml) for easy usage with the [Codefresh](codefresh.io) CI/CD platform.
 
 
-Enjoy!
-
-
-
-
-
-
+Enjoy! Double contraditcions
 
 Interesting things don't happen here
