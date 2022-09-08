@@ -1,4 +1,4 @@
-# Dockerized ReactJS application for Testing
+# Dockerized ReactJS application for Production Testing
 
 ![Docker plus React plus Codefresh](docker-reactjs-codefresh.jpg)
 
@@ -7,8 +7,6 @@ It is packaged using Codefresh.
 
 More details can be found in [the documentation page](https://codefresh.io/docs/docs/learn-by-example/nodejs/react/).
 
-1. Step 1
-
 ## Instructions
 
 To install dependencies 
@@ -16,7 +14,6 @@ To install dependencies
 ```
 yarn install 
 ```
-decommission all
 or
 
 ```
