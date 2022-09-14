@@ -1,6 +1,11 @@
 name: Deploy Docker Image in Prod
 
-on: create
+on: 
+  create:
+  push: 
+    branches:
+      - "release-**"
+      - "release/**"
 
 jobs:
   build-and-deploy-to-acr:
@@ -8,7 +13,7 @@ jobs:
     environment:
       name: prod
     name: Build and Deploy UI Code
-    if: contains('refs/heads/release*v*.*.*', github.ref)
+    if: startsWith( ${{ github.ref_name }}, "release" )
     steps:
       - uses: actions/checkout@v3
 
