@@ -9,6 +9,7 @@ More details can be found in [the documentation page](https://codefresh.io/docs/
 
 Step 1 killer queen
 step 2 ger
+step 3 king crimson
 
 ## Instructions
 
