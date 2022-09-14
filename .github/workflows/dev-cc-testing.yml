@@ -7,9 +7,11 @@ env:
   REACT_APP_DD_CLIENT_APP_ID: ${{ secrets.REACT_APP_DD_CLIENT_APP_ID }}
   
 on:
-  push:
-    tags: 
-      - v*.*.*
+  workflow_run:
+    workflows:
+      - "Create Pre-Release"
+    types:
+      - completed
   workflow_dispatch:
     inputs:
       version:
