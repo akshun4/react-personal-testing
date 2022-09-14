@@ -7,9 +7,9 @@ on:
       - "release/**"
     inputs:
       version:
-        description: 'The version to deploy, should be the same as mentioned in the release branch name'
+        description: 'The version to deploy from the release branch'
         required: true
-      are-you-sure-this-is-ready-for-production:
+      confirmation-for-production:
         description: 'Confirmation message for user'
         required: true
         type: boolean
@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Verify if correct version number has been provided in inputs
         run: |
-          ${{ github.event.inputs.version }} == (${{ github.ref_name }} | tr -d 'release/-')
+          "${{ github.event.inputs.version }}" == ("${{ github.ref_name }}" | tr -d "release/-")
         continue-on-error: false
 
       - name: Checkout
