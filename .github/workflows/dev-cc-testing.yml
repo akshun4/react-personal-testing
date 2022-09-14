@@ -7,8 +7,8 @@ env:
   REACT_APP_DD_CLIENT_APP_ID: ${{ secrets.REACT_APP_DD_CLIENT_APP_ID }}
   
 on:
-  release:
-    types: [prereleased]
+  push:
+    tags: [v*.*.*]
   workflow_dispatch:
     inputs:
       version:
