@@ -1,8 +1,9 @@
 name: Deploy Docker Image in Prod
 
 on:
-  release:
-    types: [released]
+  workflow_run:
+    workflows: ["Create release branch for Prod"]
+    types: [completed]
   push:
     branches:
       - 'release-v**'
@@ -13,16 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: prod
-    name: Build and Deploy API Image to ACR
-    steps:     
+    name: Build and Deploy UI Code
+    steps:
       - uses: actions/checkout@v3
 
-      - name: Fetch release version from automated release tag
+      - name: Fetch release version from release name
         run: |
           echo "ENVIRONMENT_VERSION=${{ github.ref_name }}" | tr -d 'release/-' >> $GITHUB_ENV;
-      
+
       - name: Set up Node.js version
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '16.x'
           cache: 'yarn'
+
