@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Verify if correct version number has been provided in inputs
         run: |
-          "${{ github.event.inputs.version }}" == ("${{ github.ref_name }}" | tr -d "release/-")
+          "${{ github.event.inputs.version }}" == $("${{ github.ref_name }}" | tr -d "release/-")
         continue-on-error: false
 
       - name: Checkout
