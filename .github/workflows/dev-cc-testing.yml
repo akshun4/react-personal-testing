@@ -7,9 +7,6 @@ env:
   REACT_APP_DD_CLIENT_APP_ID: ${{ secrets.REACT_APP_DD_CLIENT_APP_ID }}
   
 on:
-  push:
-    branches:
-      - master
   release:
     types: [prereleased]
   workflow_dispatch:
