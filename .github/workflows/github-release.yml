@@ -1,0 +1,101 @@
+on:
+  workflow_call:
+    inputs:
+      artifact_directory:
+        required: false
+        type: string
+        default: ""
+      commit_message_patch:
+        required: false
+        type: string
+        default: "patch:"
+      commit_message_minor:
+        required: false
+        type: string
+        default: "minor:"
+      commit_message_major:
+        required: false
+        type: string
+        default: "major:"
+      is_pre_release:
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  github-release:
+    runs-on: ubuntu-latest
+    env:
+      LAST_RELEASE_VERSION: "0.0.0"
+      RELEASE_VERSION: "0.0.1"
+      COMMIT_MESSAGE_PATCH: ${{ inputs.commit_message_patch }}
+      COMMIT_MESSAGE_MINOR: ${{ inputs.commit_message_minor }}
+      COMMIT_MESSAGE_MAJOR: ${{ inputs.commit_message_major }}
+      ARTIFACT_DIRECTORY: ${{ inputs.artifact_directory }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Determine Release Type
+        id: release_type
+        run: |
+          GIT_COMMAND="git log --oneline -1 --no-merges"
+          PATCH_INC=$($GIT_COMMAND | { grep -c ${{ env.COMMIT_MESSAGE_PATCH}} || :; })
+          MINOR_INC=$($GIT_COMMAND | { grep -c ${{ env.COMMIT_MESSAGE_MINOR }} || :; })
+          MAJOR_INC=$($GIT_COMMAND | { grep -c ${{ env.COMMIT_MESSAGE_MAJOR }} || :; })
+          if [[ PATCH_INC -ge 1 ]]; then 
+            echo "RELEASE_TYPE=bug" >> $GITHUB_ENV
+          elif [[ MINOR_INC -ge 1 ]]; then 
+            echo "RELEASE_TYPE=feature" >> $GITHUB_ENV
+          elif [[ MAJOR_INC -ge 1 ]]; then 
+            echo "RELEASE_TYPE=major" >> $GITHUB_ENV
+          else
+            echo "RELEASE_TYPE=null" >> $GITHUB_ENV
+          fi 
+      - name: Get Last Release Version
+        id: get_release
+        if: env.RELEASE_TYPE != 'null'
+        run: |
+          if [ -z "$(git tag --list)" ];
+          then echo "no tags exist in this repo, using the default ${{ env.LAST_RELEASE_VERSION }}";
+          else echo "LAST_RELEASE_VERSION=$(git describe --abbrev=0 --tags | sed 's/[^0-9.]*\([0-9.]*\).*/\1/')" >> $GITHUB_ENV;
+          fi
+      - name: Increment To Next Release Version
+        id: bump_version
+        if: env.RELEASE_TYPE != 'null'
+        uses: christian-draeger/increment-semantic-version@1.0.2 # https://github.com/christian-draeger/increment-semantic-version
+        with:
+          current-version: ${{ env.LAST_RELEASE_VERSION }}
+          version-fragment: ${{ env.RELEASE_TYPE }}
+
+      - name: Set Next Release Version
+        id: next_release_version
+        if: env.RELEASE_TYPE != 'null'
+        run: |
+          echo "RELEASE_VERSION=${{ steps.bump_version.outputs.next-version }}" >> $GITHUB_ENV
+      - name: Review Upcoming Release
+        id: review_release
+        if: env.RELEASE_TYPE != 'null'
+        run: |
+          echo "Previous released version: ${{ env.LAST_RELEASE_VERSION }}"
+          echo "Release type: ${{ env.RELEASE_TYPE }}"
+          echo "Version to be released: ${{ env.RELEASE_VERSION }}"
+      #TODO: Review source code to make sure it is safe
+      - name: Create Release and Tag
+        id: gh_release
+        if: env.RELEASE_TYPE != 'null'
+        uses: ncipollo/release-action@40bb172bd05f266cf9ba4ff965cb61e9ee5f6d01 # https://github.com/ncipollo/release-action
+        with:
+          commit: ${{ github.sha }}
+          tag: v${{ env.RELEASE_VERSION }}
+          generateReleaseNotes: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: ${{ env.ARTIFACT_DIRECTORY }}
+          prerelease: ${{ inputs.is_pre_release }}
+
+      - name: Show Release Url
+        id: show_release
+        if: env.RELEASE_TYPE != 'null'
+        run: |
+          echo ${{ steps.gh_release.outputs.html_url}}
