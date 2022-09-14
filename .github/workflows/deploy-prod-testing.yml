@@ -1,11 +1,18 @@
 name: Deploy Docker Image in Prod
 
 on: 
-  create:
-  push: 
+  workflow_dispatch:
     branches:
       - "release-**"
       - "release/**"
+    inputs:
+      version:
+        description: 'The version to deploy, should be the same as mentioned in the release branch name'
+        required: true
+      are-you-sure-this-is-ready-for-production:
+        description: 'Confirmation message for user'
+        required: true
+        type: boolean
 
 jobs:
   build-and-deploy-to-acr:
@@ -13,13 +20,20 @@ jobs:
     environment:
       name: prod
     name: Build and Deploy UI Code
-    if: startsWith( ${{ github.ref_name }}, "release" )
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Fetch release version from release name
+      - name: Verify if correct version number has been provided in inputs
         run: |
-          echo "ENVIRONMENT_VERSION=${{ github.ref_name }}" | tr -d 'release/-' >> $GITHUB_ENV;
+          ${{ github.event.inputs.version }} == (${{ github.ref_name }} | tr -d 'release/-')
+        continue-on-error: false
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: '${{ github.event.inputs.version }}'
+
+      - name: Set DD RUM Version
+        run: |
+          echo "REACT_APP_DD_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV;
 
       - name: Set up Node.js version
         uses: actions/setup-node@v2
