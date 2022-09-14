@@ -20,6 +20,18 @@ jobs:
         run: |
           git checkout -b release-${{ env.RELEASE_VERSION }} ${{ env.RELEASE_VERSION }}
           git push --set-upstream origin release-${{ env.RELEASE_VERSION }}
+
+      - uses: actions/checkout@v3
+        with:
+          ref: release-${{ env.RELEASE_VERSION }}
+
+      - name: Deploy Release from release branch
+        uses: './.github/workflows/deploy-prod-testing.yml'
+        with:
+          confirmation-message: true
           
+
+
+
           
           
