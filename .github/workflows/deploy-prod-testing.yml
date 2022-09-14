@@ -1,13 +1,6 @@
 name: Deploy Docker Image in Prod
 
-on:
-  workflow_run:
-    workflows: ["Create release branch for Prod"]
-    types: [completed]
-  push:
-    branches:
-      - 'release-v**'
-      - 'release/v**'
+on: create
 
 jobs:
   build-and-deploy-to-acr:
@@ -15,6 +8,7 @@ jobs:
     environment:
       name: prod
     name: Build and Deploy UI Code
+    if: contains(github.ref, 'refs/heads/release*v*.*.*')
     steps:
       - uses: actions/checkout@v3
 

@@ -40,7 +40,7 @@ jobs:
 
       - name: Fetch release version from tags
         if: inputs.version == null
-        uses: rez0n/actions-github-release@main
+        uses: rez0n/actions-github-release@v1.8
         id: node_release
         env:
           token: ${{ secrets.GITHUB_TOKEN }}
