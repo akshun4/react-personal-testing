@@ -7,6 +7,7 @@ It is packaged using Codefresh.
 
 More details can be found in [the documentation page](https://codefresh.io/docs/docs/learn-by-example/nodejs/react/).
 
+Step 1 killer queen
 ## Instructions
 
 To install dependencies 
