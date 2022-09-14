@@ -8,8 +8,6 @@ jobs:
   create-release-branch:
     runs-on: ubuntu-latest
     name: Creates Release branch From Latest Released tag
-    outputs:
-      branch_name: release-${{ steps.create_branch.outputs.release_version }}
     steps:
       - uses: actions/checkout@v3
 
@@ -23,21 +21,8 @@ jobs:
         run: |
           git checkout -b release-${{ env.RELEASE_VERSION }} ${{ env.RELEASE_VERSION }}
           git push --set-upstream origin release-${{ env.RELEASE_VERSION }}
-          echo "::set-output name=release_version::${{ env.RELEASE_VERSION }}"
+          
 
-  deploy-from-release-branch:
-    runs-on: ubuntu-latest
-    name: Deploys to Production from Release Branch
-    needs: create-release-branch
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ needs.create-release-branch.outputs.branch_name }}
-
-      - name: Deploy Release from release branch
-        uses: './.github/workflows/deploy-prod-testing.yml'
-        with:
-          confirmation-message: true
           
 
 

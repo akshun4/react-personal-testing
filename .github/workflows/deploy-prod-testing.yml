@@ -10,12 +10,6 @@ on:
         description: 'Are you sure you want to deploy to production'
         required: true
         type: boolean
-  workflow_call:
-    inputs:
-      confirmation-message:
-        description: 'Are you sure you want to deploy to production'
-        required: true
-        type: boolean
 
 jobs:
   build-and-deploy-to-acr:
