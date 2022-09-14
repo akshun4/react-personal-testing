@@ -19,4 +19,6 @@ jobs:
       - name: create release branch
         run: |
           git checkout -b release-${{ env.RELEASE_VERSION }} ${{ env.RELEASE_VERSION }}
+          git push --set-upstream origin release-${{ env.RELEASE_VERSION }}
+          
           
