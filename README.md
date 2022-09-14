@@ -10,7 +10,7 @@ More details can be found in [the documentation page](https://codefresh.io/docs/
 ## Instructions
 
 To install dependencies 
-
+new things
 ```
 yarn install 
 ```
