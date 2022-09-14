@@ -1,0 +1,15 @@
+name: Create Pre-Release
+
+on:
+  push:
+    branches:
+      - main
+      - '**-hotfix'
+      - 'hotfix/**'
+      - 'pre-release-**'
+
+jobs:
+  github-release:
+    uses: '.github/workflows/github-release.yml'
+    with:
+      is_pre_release: true
