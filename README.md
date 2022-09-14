@@ -8,6 +8,9 @@ It is packaged using Codefresh.
 More details can be found in [the documentation page](https://codefresh.io/docs/docs/learn-by-example/nodejs/react/).
 
 Step 1 killer queen
+step 2 ger
+step 3 king crimson
+
 ## Instructions
 
 To install dependencies 
