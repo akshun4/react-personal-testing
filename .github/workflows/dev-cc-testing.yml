@@ -8,10 +8,8 @@ env:
   
 on:
   workflow_run:
-    workflows:
-      - "Create Pre-Release"
-    types:
-      - completed
+    workflows: ["Create Pre-Release"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       version:
@@ -25,8 +23,27 @@ jobs:
       name: dev
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v2
+      - name: Fetch release version from input
+        if: inputs.version != null
+        run: |
+          echo "ENVIRONMENT_VERSION=${{ inputs.version }}" >> $GITHUB_ENV; 
 
+      - name: Checkout repo for specific version given as an input
+        if: inputs.version != null
+        uses: actions/checkout@v3
+        with:
+          ref: '${{ github.event.inputs.version }}'       
+
+      - name: Checkout repo if version is not given as an input
+        if: inputs.version == null
+        uses: actions/checkout@v3
+
+      - name: Fetch release version from tags
+        if: inputs.version == null
+        run: |
+          echo "git fetch --prune --unshallow --tags"
+          echo "ENVIRONMENT_VERSION=v$(git describe --abbrev=0 --tags | sed 's/[^0-9.]*\([0-9.]*\).*/\1/')" >> $GITHUB_ENV;
+            
       - name: Get latest release of NodeJS
         uses: rez0n/actions-github-release@main
         id: node_release
