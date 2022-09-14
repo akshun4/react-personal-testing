@@ -10,6 +10,6 @@ on:
 
 jobs:
   github-release:
-    uses: './.github/workflows/github-release.yml@v1.x.x'
+    uses: './.github/workflows/github-release.yml'
     with:
       is_pre_release: true
