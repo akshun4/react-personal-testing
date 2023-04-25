@@ -8,11 +8,12 @@ jobs:
     name: Check IPs
     runs-on: ubuntu-latest
     steps:
+      - run: echo "$ls"
       - name: Get current networking file
         id: networkingFile
         uses: RadovanPelka/github-action-json@v1.0.1
         with:
-          path: "package.json"
+          path: "./package.json"
 
       - id: newAllowlistedIpList
         run: |
