@@ -50,16 +50,15 @@ jobs:
             echo new_array=$new_array >> "$GITHUB_ENV"
           fi
 
-      - run: echo "${{ env.new_array }}"  
-
       - name: Compare arrays
         id: compare
         uses: actions/github-script@v6
         with:
           script: |
-            console.log("Old array: $(process.env.OLD_ARRAY)"
-            console.log("New array: $(process.env.NEW_ARRAY)"
-            
-          env:
-            OLD_ARRAY: ${{ steps.extract.outputs.extractedArray }}
-            NEW_ARRAY: ${{ env.new_array }}
+            old_array=(${{ steps.extract.outputs.extractedArray }})
+            new_array=(${{ env.new_array }})
+            if [[ "${old_array[@]}" == "${new_array[@]}" ]]; then
+              echo "The arrays are equal."
+            else
+              echo "The arrays are different."
+            fi
