@@ -22,9 +22,8 @@ jobs:
 
       - id: currentAllowlistedIpList
         run: |
-          response1=${{ steps.networkingFile.outputs.networking.allowedIpRanges }}
-          echo $response1
-          echo $response1 | jq '.'
+          response=${{ steps.networkingFile.outputs.networking }}
+          echo $response | jq '.allowedIpRanges'
 
       - id: newAllowlistedIpList
         run: |
@@ -32,6 +31,5 @@ jobs:
           echo $response | jq '.ipRanges'
                           
       - id: equalityOfLists
-        if: 
         run: |
           echo [ "${{ steps.currentAllowlistedIpList.outputs }}" = "${{ steps.newAllowlistedIpList.outputs }}" ]; echo "$?" 
