@@ -47,8 +47,9 @@ jobs:
           curl -s --data "resp_format=json" https://my.imperva.com/api/integration/v1/ips | jq '.ipRanges' >> "$GITHUB_ENV"
           echo "$EOF" >> "$GITHUB_ENV"
 
-      - run: echo "{{ env.new_array }}"  
-      - name: Compare array"
+      - run: echo "${{ env.new_array }}"  
+
+      - name: Compare arrays
         id: compare
         uses: actions/github-script@v6
         with:
