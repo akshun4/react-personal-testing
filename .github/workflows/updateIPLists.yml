@@ -57,8 +57,10 @@ jobs:
           script: |
             old_array=(${{ steps.extract.outputs.extractedArray }})
             new_array=(${{ env.new_array }})
-            if [[ "${old_array[@]}" == "${new_array[@]}" ]]; then
-              echo "The arrays are equal."
-            else
-              echo "The arrays are different."
-            fi
+            let result =
+              old_array.length === new_array.length &&
+              old_array.every(function (element) {
+                return new_array.includes(element);
+              });
+            return(result)
+
