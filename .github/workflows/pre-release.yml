@@ -7,6 +7,8 @@ on:
       - '**-hotfix'
       - 'hotfix/**'
       - 'pre-release-**'
+    paths-ignore:
+      - '.github/workflows/updateIPLists.yml'
 
 jobs:
   github-release:
