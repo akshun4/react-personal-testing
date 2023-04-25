@@ -16,7 +16,7 @@ jobs:
 
       - name: Read JSON and extract array
         id: extract
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           script: |
             const fs = require('fs');
@@ -42,11 +42,29 @@ jobs:
       - name: Use extracted array
         run: echo "Extracted array is ${{ steps.extract.outputs.extractedArray }}"
 
-      - id: newAllowlistedIpList
+      - name: Fetch new Imperva IPs
+        id: newAllowlistedIpList
         run: |
-          response=$(curl -s --data "resp_format=json" https://my.imperva.com/api/integration/v1/ips)
-          echo $response | jq '.ipRanges'
+          new_array=$(curl -s --data "resp_format=json" https://my.imperva.com/api/integration/v1/ips | jq '.ipRanges')
+          echo "::set-output name=newAllowlistedIpList::$new_array"
                           
-      - id: equalityOfLists
-        run: |
-          echo [ "${{ steps.currentAllowlistedIpList.outputs }}" = "${{ steps.newAllowlistedIpList.outputs }}" ]; echo "$?" 
+      - name: Compare arrays
+        id: compare
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const oldArray = JSON.parse(process.env.OLD_ARRAY);
+            const newArray = JSON.parse(process.env.NEW_ARRAY);
+
+            if (JSON.stringify(oldArray) === JSON.stringify(newArray)) {
+              console.log("Arrays are equal");
+            } else {
+              console.log("Arrays are not equal");
+              console.log(`Old array: ${JSON.stringify(oldArray)}`);
+              console.log(`New array: ${JSON.stringify(newArray)}`);
+              core.setFailed("Arrays are not equal");
+            }
+
+        env:
+          OLD_ARRAY: ${{ steps.extract.outputs.extractedArray }}
+          NEW_ARRAY: ${{ steps.newAllowlistedIpList.outputs.newArray }}
