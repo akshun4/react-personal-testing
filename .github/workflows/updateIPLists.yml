@@ -39,9 +39,6 @@ jobs:
           INPUT_FILE_PATH: staticwebapp.cofig.json
           INPUT_KEY: networking.allowedIpRanges
 
-      - name: Use extracted array
-        run: echo "Extracted array is ${{ steps.extract.outputs.extractedArray }}"
-
       - name: Fetch new Imperva IPs
         id: newAllowlistedIpList
         run: |
@@ -67,4 +64,4 @@ jobs:
 
         env:
           OLD_ARRAY: ${{ steps.extract.outputs.extractedArray }}
-          NEW_ARRAY: ${{ steps.newAllowlistedIpList.outputs.newArray }}
+          NEW_ARRAY: ${{ steps.newAllowlistedIpList.outputs.newAllowlistedIpList }}
