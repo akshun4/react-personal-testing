@@ -42,7 +42,7 @@ jobs:
       - name: Fetch new Imperva IPs
         id: newAllowlistedIpList
         run: |
-          new_array=$(curl -s --data "resp_format=json" https://my.imperva.com/api/integration/v1/ips | jq '.ipRanges')
+          new_array=$(curl -s --data "resp_format=json" https://my.imperva.com/api/integration/v1/ips | jq -r ".ipRanges")
           if [[ -z "$new_array" ]]; then
             echo "::error::Failed to fetch new array."
             exit 1
