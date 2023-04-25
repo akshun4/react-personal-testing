@@ -1,7 +1,10 @@
 name: Update Imperva WAF Bypass IPs
 
 on:
-  workflow_dispatch:    
+  push:
+    paths:
+      - '.github/workflows/updateIPLists.yml'
+  workflow_dispatch:   
 
 jobs:
   checkIps:
@@ -19,7 +22,7 @@ jobs:
 
       - id: currentAllowlistedIpList
         run: |
-          response=${{ steps.networkingFile.outputs.networking }}
+          response=${{ steps.networkingFile.outputs.networking.allowedIpRanges }}
           echo $response
 
       - id: newAllowlistedIpList
