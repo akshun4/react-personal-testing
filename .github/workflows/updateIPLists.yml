@@ -43,12 +43,7 @@ jobs:
         id: newAllowlistedIpList
         run: |
           new_array=$(curl -s --data "resp_format=json" https://my.imperva.com/api/integration/v1/ips | jq -r ".ipRanges")
-          if [[ -z "$new_array" ]]; then
-            echo "::error::Failed to fetch new array."
-            exit 1
-          else
-            echo "$new_array" >> "$GITHUB_ENV"
-          fi
+          echo "$new_array" >> "$GITHUB_ENV"
 
       - run: echo "{{ env.new_array }}"  
       - name: Compare array"
