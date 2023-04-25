@@ -47,8 +47,7 @@ jobs:
             echo "::error::Failed to fetch new array."
             exit 1
           else
-            new_array=$(echo "$new_array" | sed -e 's/^[[:space:]]*//')
-            echo "$new_array" >> "$GITHUB_ENV"
+            echo new_array=$new_array >> "$GITHUB_ENV"
           fi
 
       - run: echo "${{ env.new_array }}"  
