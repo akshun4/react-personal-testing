@@ -14,16 +14,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Get current networking file
-        id: networkingFile
-        uses: RadovanPelka/github-action-json@v1.0.1
+      - name: Read JSON and extract array
+        id: extract
+        uses: actions/github-script@v4
         with:
-          path: "staticwebapp.cofig.json"
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const inputFilePath = path.resolve(process.env.INPUT_FILE_PATH);
+            const keyToExtract = process.env.INPUT_KEY;
+            const data = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
 
-      - id: currentAllowlistedIpList
-        run: |
-          response=${{ steps.networkingFile.outputs.networking }}
-          echo $response | jq '.allowedIpRanges'
+            // Handle nested keys
+            const keys = keyToExtract.split('.');
+            let extractedArray = data;
+            for (let i = 0; i < keys.length; i++) {
+              extractedArray = extractedArray[keys[i]];
+            }
+            
+            console.log(`Extracted array: ${JSON.stringify(extractedArray)}`);
+            core.setOutput('extractedArray', extractedArray);
+
+        env:
+          INPUT_FILE_PATH: staticwebapp.cofig.json
+          INPUT_KEY: networking.allowedIpRanges
+
+      - name: Use extracted array
+        run: echo "Extracted array is ${{ steps.extract.outputs.extractedArray }}"
 
       - id: newAllowlistedIpList
         run: |
