@@ -9,6 +9,7 @@ on:
       - 'pre-release-**'
     paths-ignore:
       - '.github/workflows/updateIPLists.yml'
+      - 'staticwebapp.cofig.json'
 
 jobs:
   github-release:

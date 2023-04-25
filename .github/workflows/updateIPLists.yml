@@ -57,6 +57,7 @@ jobs:
           script: |
             old_array=(${{ steps.extract.outputs.extractedArray }})
             new_array=(${{ env.new_array }})
+            
             let result =
               old_array.length === new_array.length &&
               old_array.every(function (element) {
@@ -64,4 +65,5 @@ jobs:
               });
             return(result)
 
-      - run: echo "${{steps.compare.outputs.result}}"
+      - name: Show result
+        run: echo "${{steps.compare.outputs.result}}"
