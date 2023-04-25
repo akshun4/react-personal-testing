@@ -8,7 +8,10 @@ jobs:
     name: Check IPs
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - run: |
+          echo "$(ls -larth)"
+          cd ../
           echo "$(ls -larth)"
           cd ../
           echo "$(ls -larth)"
