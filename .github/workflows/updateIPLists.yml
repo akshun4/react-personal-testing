@@ -8,18 +8,14 @@ jobs:
     name: Check IPs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: |
-          echo "$(ls -larth)"
-          cd ../
-          echo "$(ls -larth)"
-          cd ../
-          echo "$(ls -larth)"
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Get current networking file
         id: networkingFile
         uses: RadovanPelka/github-action-json@v1.0.1
         with:
-          path: "./package.json"
+          path: "staticwebapp.cofig.json"
 
       - id: newAllowlistedIpList
         run: |
@@ -30,8 +26,7 @@ jobs:
         run: |
           response=${{ steps.networkingFile.outputs.networking.allowedIpRanges }}
           echo $response | jq '.'
-          
-      
+                
       - id: equalityOfLists
         run: |
           echo [ "${{ steps.currentAllowlistedIpList.outputs }}" = "${{ steps.newAllowlistedIpList.outputs }}" ]; echo "$?" 
