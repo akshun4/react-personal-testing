@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/updateIPLists.yml'
+      - 'staticwebapp.cofig.json'
   workflow_dispatch:   
 
 jobs:
