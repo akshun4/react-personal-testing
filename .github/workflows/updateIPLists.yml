@@ -22,29 +22,27 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const inputFilePath = path.resolve(process.env.INPUT_FILE_PATH);
-            const keyToExtract = process.env.INPUT_KEY;
+            
             
             let extractedArray = [];
-            if (inputFilePath && keyToExtract) {
-              try {
-                const data = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
+            try {
+              const inputFilePath = path.resolve(process.env.INPUT_FILE_PATH);
+              const keyToExtract = process.env.INPUT_KEY;
+            
+              const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
 
+              if (keyToExtract && jsonData.hasOwnProperty(keyToExtract))
                 // Handle nested keys
                 const keys = keyToExtract.split('.');
-                let extractedArray = data;
+                let extractedArray = jsonData;
                 for (let i = 0; i < keys.length; i++) {
-                  extractedArray = extractedArray[keys[i]] || [];
+                  extractedArray = extractedArray[keys[i]];
                 }
-              } catch (error) {
-                console.error(`Error reading or parsing JSON file: ${error}`);
-              }
-            } else {
-              console.warn('Either inputFilePath or keyToExtract is not provided, returning empty array');
+            } catch (error) {
+              console.log(`Error reading file ${inputFilePath}: ${error}`);
             }
-                        
+            
             core.setOutput('extractedArray', extractedArray);
-
         env:
           INPUT_FILE_PATH: staticwebapp.cofig.json
           INPUT_KEY: networking.allowedIpRanges
