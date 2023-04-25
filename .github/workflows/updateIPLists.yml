@@ -17,16 +17,16 @@ jobs:
         with:
           path: "staticwebapp.cofig.json"
 
+      - id: currentAllowlistedIpList
+        run: |
+          response=${{ steps.networkingFile.outputs.networking }}
+          echo $response
+
       - id: newAllowlistedIpList
         run: |
           response=$(curl -s --data "resp_format=json" https://my.imperva.com/api/integration/v1/ips)
           echo $response | jq '.ipRanges'
-          
-      - id: currentAllowlistedIpList
-        run: |
-          response=${{ steps.networkingFile.outputs.networking.allowedIpRanges }}
-          echo $response | jq '.'
-                
+                          
       - id: equalityOfLists
         run: |
           echo [ "${{ steps.currentAllowlistedIpList.outputs }}" = "${{ steps.newAllowlistedIpList.outputs }}" ]; echo "$?" 
