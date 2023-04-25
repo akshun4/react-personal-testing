@@ -29,14 +29,14 @@ jobs:
             const keys = keyToExtract.split('.');
             let extractedArray = data;
             for (let i = 0; i < keys.length; i++) {
+              if (!extractedArray.hasOwnProperty(keys[i])) {
+                console.log(`Key ${keys[i]} not found in the input file`);
+                core.setOutput('extractedArray', []);
+                return;
+              }
               extractedArray = extractedArray[keys[i]];
             }
-            if (!extractedArray) {
-              extractedArray = [];
-              console.log(`Array not found in ${inputFilePath} for key ${keyToExtract}. Setting extractedArray to empty array.`);
-            } else {
-              console.log(`Extracted array: ${JSON.stringify(extractedArray)}`);
-            }
+            
             console.log(`Extracted array: ${JSON.stringify(extractedArray)}`);
             core.setOutput('extractedArray', extractedArray);
 
