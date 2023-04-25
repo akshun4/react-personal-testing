@@ -47,7 +47,7 @@ jobs:
             echo "::error::Failed to fetch new array."
             exit 1
           else
-            echo "$new_array" > "${GITHUB_ENV}"
+            echo "$new_array" >> "$GITHUB_ENV"
           fi
 
       - run: echo "${{ env.new_array }}"  
