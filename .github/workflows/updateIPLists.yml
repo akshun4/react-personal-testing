@@ -64,3 +64,4 @@ jobs:
               });
             return(result)
 
+      - run: echo "${{steps.compare.outputs.result}}"
