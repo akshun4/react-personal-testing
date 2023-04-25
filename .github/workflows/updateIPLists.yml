@@ -57,10 +57,10 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            echo "Old array: ${{ steps.extract.outputs.extractedArray }}"
-            echo "New array: ${{ env.new_array }}"
-            if [[ "\${{ steps.extract.outputs.extractedArray }}" == "\${{ env.new_array }}" ]]; then
-              echo "The arrays are equal."
-            else
-              echo "The arrays are different."
-            fi
+            echo "Old array: /${{ steps.extract.outputs.extractedArray }}"
+            echo "New array: /${{ env.new_array }}"
+            // if [[ "\${{ steps.extract.outputs.extractedArray }}" == "\${{ env.new_array }}" ]]; then
+            //  echo "The arrays are equal."
+            // else
+            //  echo "The arrays are different."
+            // fi
