@@ -122,4 +122,4 @@ jobs:
           add-paths: ./staticwebapp.cofig.json
           branch: feat-update-imperva-ips
           title: Update allowlisted Imperva IPs
-          body: {{ steps.pr-body.outputs.pr-body }}
+          body: "${{ steps.pr-body.outputs.pr-body }}"
