@@ -111,7 +111,7 @@ jobs:
         id: pr-body
         run: |
           sed_command='s|## Description|## Description\nRefer to the \[**updated** list\](https\:\/\/docs.imperva.com\/en-US\/bundle\/z-kb-articles-km/page/c85245b7.html) of Imperva IPs only through which the entire network traffic must flow.|g'
-          body=$(sed "$sed_command" ./github/pr_template.md)
+          body=$(sed "$sed_command" ./.github/pr_template.md)
           echo "pr-body=$body" >> $GITHUB_OUTPUT
 
       - name: Create PR
