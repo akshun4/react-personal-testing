@@ -77,6 +77,7 @@ jobs:
       - name: Updates file
         if: steps.compare.outputs.result == 'false'
         id: updateFile
+        working-directory: ${{ github.workspace }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -107,16 +108,25 @@ jobs:
           INPUT_FILE_PATH: staticwebapp.cofig.json
           INPUT_KEY: networking.allowedIpRanges
 
-      - name: Creates PR
-        id: createPR
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          git config --global user.email "akshuny@gmail.com"
-          git config --global user.name "akshun4"
-          git checkout -b feat-update-imperva-ips
-          git add staticwebapp.cofig.json
-          git commit -m "Updated staticwebapp.cofig.json"
-          git push origin feat-update-imperva-ips
-          gh pr create -B master -H feat-update-imperva-ips -t 'Update allowlisted Imperva IPs' --body 'Refer to updated Imperva IPs [list](https://docs.imperva.com/en-US/bundle/z-kb-articles-km/page/c85245b7.html)'
+      # - name: Creates PR
+      #   id: createPR
+      #   env:
+      #     GH_TOKEN: ${{ github.token }}
+      #   run: |
+      #     git config --global user.email "akshuny@gmail.com"
+      #     git config --global user.name "akshun4"
+      #     git checkout -b feat-update-imperva-ips
+      #     git add staticwebapp.cofig.json
+      #     git commit -m "Updated staticwebapp.cofig.json"
+      #     git push origin feat-update-imperva-ips
+      #     gh pr create -B master -H feat-update-imperva-ips -t 'Update allowlisted Imperva IPs' --body 'Refer to updated Imperva IPs [list](https://docs.imperva.com/en-US/bundle/z-kb-articles-km/page/c85245b7.html)'
 
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Updated staticwebapp.cofig.json
+          add-paths: staticwebapp.cofig.json
+          branch: feat-update-imperva-ips
+          title: Update allowlisted Imperva IPs
+          body: Refer to updated Imperva IPs [list](https://docs.imperva.com/en-US/bundle/z-kb-articles-km/page/c85245b7.html)
