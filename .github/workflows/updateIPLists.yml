@@ -93,9 +93,9 @@ jobs:
             const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
             jsonData.oldArray = newArray;
             fs.writeFileSync(inputFilePath, JSON.stringify(jsonData, null, 2));
-          env:
-            INPUT_FILE_PATH: staticwebapp.cofig.json
-            INPUT_KEY: networking.allowedIpRanges
+        env:
+          INPUT_FILE_PATH: staticwebapp.cofig.json
+          INPUT_KEY: networking.allowedIpRanges
 
       # - name: Creates PR
       #   id: createPR
