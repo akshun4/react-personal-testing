@@ -15,15 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Create PR body
-        id: pr-body
-        run: |
-          sed_command='s|## Description|## Description\nRefer to the [**updated** list](https://docs.imperva.com/en-US/bundle/z-kb-articles-km/page/c85245b7.html) of Imperva IPs only through which the entire network traffic must flow.|g'
-          body=$(sed "$sed_command" ./.github/pr_template.md)
-          echo "pr-body<<EOF" >> "$GITHUB_OUTPUT"
-          echo "$body" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
-
       - name: Read JSON and extract array
         id: extract
         uses: actions/github-script@v6
@@ -116,15 +107,18 @@ jobs:
           INPUT_FILE_PATH: staticwebapp.cofig.json
           INPUT_KEY: networking.allowedIpRanges
 
-      # - name: Create PR body
-      #   id: pr-body
-      #   run: |
-      #     sed_command='s|## Description|## Description\nRefer to the \[**updated** list\](https\:\/\/docs.imperva.com\/en-US\/bundle\/z-kb-articles-km/page/c85245b7.html) of Imperva IPs only through which the entire network traffic must flow.|g'
-      #     body=$(sed "$sed_command" ./.github/pr_template.md)
-      #     echo "pr-body=$body" >> "$GITHUB_OUTPUT"
-
+      - name: Create PR body
+        if: steps.compare.outputs.result == 'false'
+        id: pr-body
+        run: |
+          sed_command='s|## Description|## Description\nRefer to the [**updated** list](https://docs.imperva.com/en-US/bundle/z-kb-articles-km/page/c85245b7.html) of Imperva IPs only through which the entire network traffic must flow.|g'
+          body=$(sed "$sed_command" ./.github/pr_template.md)
+          echo "pr-body<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$body" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: Create PR
+        if: steps.compare.outputs.result == 'false'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
