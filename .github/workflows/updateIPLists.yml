@@ -84,9 +84,9 @@ jobs:
             const path = require('path');
             const inputFilePath = path.resolve(process.env.INPUT_FILE_PATH);
             const keyToExtract = process.env.INPUT_KEY;
-            // const oldArray = (${{ steps.extract.outputs.extractedArray }})
-            // const newArray = JSON.parse(${{ env.new_array }});            
-            // const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
+            const oldArray = JSON.parse(${{ steps.extract.outputs.extractedArray }});
+            const newArray = JSON.parse(${{ env.new_array }});            
+            const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
             // jsonData.oldArray = newArray;
             // fs.writeFileSync(inputFilePath, JSON.stringify(jsonData, null, 2));
         env:
