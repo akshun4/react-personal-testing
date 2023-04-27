@@ -117,6 +117,6 @@ jobs:
           git checkout -b feat-update-imperva-ips
           git add staticwebapp.cofig.json
           git commit -m "Updated staticwebapp.cofig.json"
-          git push origin feat-branch
+          git push origin feat-update-imperva-ips
           gh pr create -B master -H feat-update-imperva-ips -t 'Update allowlisted Imperva IPs' --body 'Refer to updated Imperva IPs [list](https://docs.imperva.com/en-US/bundle/z-kb-articles-km/page/c85245b7.html)'
 
