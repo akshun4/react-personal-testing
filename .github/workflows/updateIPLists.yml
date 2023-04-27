@@ -75,7 +75,7 @@ jobs:
         run: echo "${{steps.compare.outputs.result}}"
 
       - name: Check condition and exit
-        if: steps.compare.outputs.result == true
+        if: steps.compare.outputs.result == 'true'
         run: |
           exit 1
 
@@ -88,11 +88,11 @@ jobs:
             const path = require('path');
             const inputFilePath = path.resolve(process.env.INPUT_FILE_PATH);
             const keyToExtract = process.env.INPUT_KEY;
-            const oldArray = (${{ steps.extract.outputs.extractedArray }})
-            const newArray = JSON.parse(${{ env.new_array }});            
-            const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
-            jsonData.keyToExtract = newArray;
-            fs.writeFileSync(inputFilePath, JSON.stringify(jsonData, null, 2));
+            // const oldArray = (${{ steps.extract.outputs.extractedArray }})
+            // const newArray = JSON.parse(${{ env.new_array }});            
+            // const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
+            // jsonData.oldArray = newArray;
+            // fs.writeFileSync(inputFilePath, JSON.stringify(jsonData, null, 2));
         env:
           INPUT_FILE_PATH: staticwebapp.cofig.json
           INPUT_KEY: networking.allowedIpRanges
