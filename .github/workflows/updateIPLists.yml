@@ -74,12 +74,8 @@ jobs:
       - name: Show result
         run: echo "${{steps.compare.outputs.result}}"
 
-      - name: Check condition and exit
-        if: steps.compare.outputs.result == 'true'
-        run: |
-          exit 1
-
       - name: Creates updated file
+        if: steps.compare.outputs.result == 'false'
         id: createFile
         uses: actions/github-script@v6
         with:
