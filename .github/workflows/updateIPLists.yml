@@ -15,6 +15,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Create PR body
+        id: pr-body
+        run: |
+          sed_command='s|## Description|## Description\n\nRefer to the [**updated**] things.|g'
+          body=$(sed "$sed_command" ./.github/pr_template.md)
+          echo "pr-body=$body" >> "$GITHUB_OUTPUT"
+
       - name: Read JSON and extract array
         id: extract
         uses: actions/github-script@v6
@@ -114,12 +121,6 @@ jobs:
       #     body=$(sed "$sed_command" ./.github/pr_template.md)
       #     echo "pr-body=$body" >> "$GITHUB_OUTPUT"
 
-      - name: Create PR body
-        id: pr-body
-        run: |
-          sed_command='s|## Description|## Description\n\nRefer to the \[**updated**\] things.|g'
-          body=$(sed "$sed_command" ./.github/pr_template.md)
-          echo "pr-body=$body" >> "$GITHUB_OUTPUT"
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v5
