@@ -74,9 +74,9 @@ jobs:
       - name: Show result
         run: echo "${{steps.compare.outputs.result}}"
 
-      - name: Creates updated file
+      - name: Updates file
         if: steps.compare.outputs.result == 'false'
-        id: createFile
+        id: updateFile
         uses: actions/github-script@v6
         with:
           script: |
@@ -89,9 +89,10 @@ jobs:
             const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
             jsonData[keyToExtract] = newArray;
             fs.writeFileSync(inputFilePath, JSON.stringify(jsonData, null, 2));
+            console.log(JSON.stringify(jsonData, null, 2));
         env:
           INPUT_FILE_PATH: staticwebapp.cofig.json
-          INPUT_KEY: networking
+          INPUT_KEY: networking.allowedIpRanges
 
       # - name: Creates PR
       #   id: createPR
