@@ -77,7 +77,6 @@ jobs:
       - name: Updates file
         if: steps.compare.outputs.result == 'false'
         id: updateFile
-        working-directory: ${{ github.workspace }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -126,7 +125,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Updated staticwebapp.cofig.json
-          add-paths: staticwebapp.cofig.json
+          add-paths: ./staticwebapp.cofig.json
           branch: feat-update-imperva-ips
           title: Update allowlisted Imperva IPs
           body: Refer to updated Imperva IPs [list](https://docs.imperva.com/en-US/bundle/z-kb-articles-km/page/c85245b7.html)
