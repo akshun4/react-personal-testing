@@ -73,3 +73,32 @@ jobs:
 
       - name: Show result
         run: echo "${{steps.compare.outputs.result}}"
+
+      - name: Check condition and exit
+        if: steps.compare.output.result == true
+        run: |
+          exit 1
+
+      - name: Creates updated file
+        id: createFile
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const inputFilePath = path.resolve(process.env.INPUT_FILE_PATH);
+            const keyToExtract = process.env.INPUT_KEY;
+            const oldArray = (${{ steps.extract.outputs.extractedArray }})
+            const newArray = JSON.parse(${{ env.new_array }});            
+            const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
+            jsonData.oldArray = newArray;
+            fs.writeFileSync(inputFilePath, JSON.stringify(jsonData, null, 2));
+          env:
+            INPUT_FILE_PATH: staticwebapp.cofig.json
+            INPUT_KEY: networking.allowedIpRanges
+
+      # - name: Creates PR
+      #   id: createPR
+      #   run: |
+      #     git checkout -b feat-update-imperva-ips
+      #     gh pr create -B master -H feat-update-imperva-ips -t 'Update Imperva IPs in allowlist' --body 'Refer to updated Imperva IPs [list](https://docs.imperva.com/en-US/bundle/z-kb-articles-km/page/c85245b7.html)'
