@@ -117,7 +117,8 @@ jobs:
       - name: Create PR body
         id: pr-body
         run: |
-          body='Refer to the [**updated**](https://google.com/weherever-we-may-roam/ewew.html) things.'
+          sed_command='s|## Description|## Description\nRefer to the \[**updated**\](https\:\/\/google.com\/weherever-we-may-roam\/ewew.html) things.|g'
+          body=$(sed "$sed_command" ./.github/pr_template.md)
           echo "pr-body=$body" >> "$GITHUB_OUTPUT"
 
       - name: Create PR
