@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       INPUT_FILE_PATH: "staticwebapp.cofig.json"
-      INPUT_KEY: "networking.allowedIpRanges"
+      INPUT_KEY: "networkings"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -120,6 +120,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Updated staticwebapp.cofig.json
           add-paths: ./staticwebapp.cofig.json
-          branch: feat-update-imperva-ips
+          branch: feat-update-imperva-ips-2
           title: Update allowlisted Imperva IPs
           body: "${{ steps.pr-body.outputs.pr-body }}"
