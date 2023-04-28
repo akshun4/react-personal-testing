@@ -12,8 +12,8 @@ jobs:
     name: Check IPs
     runs-on: ubuntu-latest
     env:
-      INPUT_FILE_PATH: staticwebapp.cofig.json
-      INPUT_KEY: networking.allowedIpRanges
+      INPUT_FILE_PATH: "staticwebapp.cofig.json"
+      INPUT_KEY: "networking.allowedIpRanges"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -93,8 +93,9 @@ jobs:
               } else {
                 const currentKey = keys[0];
                 if (!obj.hasOwnProperty(currentKey)) {
-                  setNestedValue(obj[currentKey], keys.slice(1), value);
+                  obj[currentKey] = {};
                 }
+                setNestedValue(obj[currentKey], keys.slice(1), value);
               }
             }
 
