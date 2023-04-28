@@ -25,8 +25,8 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const inputFilePath = path.resolve({{ env.INPUT_FILE_PATH }});
-            const keyToExtract = {{ env.INPUT_KEY }};
+            const inputFilePath = path.resolve(`${{ env.INPUT_FILE_PATH }}`);
+            const keyToExtract = (`${{ env.INPUT_KEY }}`);
             const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
             
             // Handle nested keys
