@@ -93,9 +93,8 @@ jobs:
               } else {
                 const currentKey = keys[0];
                 if (!obj.hasOwnProperty(currentKey)) {
-                  obj[currentKey] = newArray;
+                  setNestedValue(obj[currentKey], keys.slice(1), value);
                 }
-                setNestedValue(obj[currentKey], keys.slice(1), value);
               }
             }
 
