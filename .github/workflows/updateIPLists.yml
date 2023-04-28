@@ -11,6 +11,9 @@ jobs:
   checkIps:
     name: Check IPs
     runs-on: ubuntu-latest
+    env:
+      INPUT_FILE_PATH: staticwebapp.cofig.json
+      INPUT_KEY: networking.allowedIpRanges
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,8 +25,8 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const inputFilePath = path.resolve(process.env.INPUT_FILE_PATH);
-            const keyToExtract = process.env.INPUT_KEY;
+            const inputFilePath = path.resolve(${{ env.INPUT_FILE_PATH }});
+            const keyToExtract = ${{ env.INPUT_KEY }};
             const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
             
             // Handle nested keys
@@ -40,10 +43,6 @@ jobs:
             
             console.log(`Extracted array: ${JSON.stringify(extractedArray)}`);
             core.setOutput('extractedArray', extractedArray);
-
-        env:
-          INPUT_FILE_PATH: staticwebapp.cofig.json
-          INPUT_KEY: networking.allowedIpRanges
 
       - name: Fetch new Imperva IPs
         id: newAllowlistedIpList
@@ -82,8 +81,8 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const inputFilePath = path.resolve(process.env.INPUT_FILE_PATH);
-            const keyToExtract = process.env.INPUT_KEY;
+            const inputFilePath = path.resolve(${{ env.INPUT_FILE_PATH }});
+            const keyToExtract = ${{ env.INPUT_KEY }};
             const newArray = JSON.parse(`${{ env.new_array }}`);
             const jsonData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
 
@@ -103,9 +102,6 @@ jobs:
             setNestedValue(jsonData, keyToExtract.split('.'), newArray);
             fs.writeFileSync(inputFilePath, JSON.stringify(jsonData, null, 2));
             console.log(JSON.stringify(jsonData, null, 2));
-        env:
-          INPUT_FILE_PATH: staticwebapp.cofig.json
-          INPUT_KEY: networking.allowedIpRanges
 
       - name: Create PR body
         if: steps.compare.outputs.result == 'false'
