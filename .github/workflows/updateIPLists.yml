@@ -70,7 +70,7 @@ jobs:
               });
             return(result)
 
-      - name: Show result
+      - name: Checks if updates are required
         run: echo "${{steps.compare.outputs.result}}"
 
       - name: Updates file
