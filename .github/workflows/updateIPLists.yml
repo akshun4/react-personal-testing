@@ -113,13 +113,18 @@ jobs:
           echo "$body" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
 
+      - name: Get current date
+        id: date
+        run: |
+          echo "now=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+
       - name: Create PR
         if: steps.compare.outputs.result == 'false'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Updated staticwebapp.cofig.json
+          commit-message: "Updated staticwebapp.cofig.json on ${{ steps.date.outputs.now }}"
           add-paths: ./staticwebapp.cofig.json
-          branch: feat-update-imperva-ips-2
+          branch: "feat-update-imperva-${{ steps.date.outputs.now }}"
           title: Update allowlisted Imperva IPs
           body: "${{ steps.pr-body.outputs.pr-body }}"
