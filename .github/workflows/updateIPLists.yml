@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       INPUT_FILE_PATH: "staticwebapp.cofig.json"
-      INPUT_KEY: "networkings"
+      INPUT_KEY: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v3
