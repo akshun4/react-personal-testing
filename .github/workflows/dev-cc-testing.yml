@@ -10,9 +10,6 @@ on:
   workflow_run:
     workflows: ["Create Pre-Release"]
     types: [completed]
-  push: 
-    branches:
-      master
   workflow_dispatch:
     inputs:
       version:
@@ -43,7 +40,8 @@ jobs:
 
       - name: injects values into app environment
         run: |
-          echo "github_repo=github.com/$GITHUB_REPOSITORY" >> $GITHUB_ENV;
+          echo "git.repository_url=github.com/$GITHUB_REPOSITORY" >> $GITHUB_ENV;
+          echo "git.commit.sha=$GITHUB_SHA" >> $GITHUB_ENV;
 
       - name: Fetch release version from tags
         if: inputs.version == null

@@ -3,7 +3,6 @@ name: Create Pre-Release
 on:
   push:
     branches:
-      - master
       - '**-hotfix'
       - 'hotfix/**'
       - 'pre-release-**'
