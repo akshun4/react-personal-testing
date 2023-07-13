@@ -42,7 +42,7 @@ jobs:
         run: |
           echo "git.repository_url=github.com/$GITHUB_REPOSITORY" >> $GITHUB_ENV;
           echo "git.commit.sha=$GITHUB_SHA" >> $GITHUB_ENV;
-          echo "git.head_commit.sha=$(git rev-parse HEAD) >> $GITHUB_ENV;
+          echo "git.head_commit.sha=$(git rev-parse HEAD)" >> $GITHUB_ENV;
 
       - name: Fetch release version from tags
         if: inputs.version == null
