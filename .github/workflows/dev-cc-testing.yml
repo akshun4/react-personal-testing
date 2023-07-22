@@ -32,7 +32,11 @@ jobs:
         if: inputs.version != null
         uses: actions/checkout@v3
         with:
-          ref: '${{ github.event.inputs.version }}'       
+          ref: '${{ github.event.inputs.version }}'
+
+      - run: |
+          tests = "sdsd"
+          echo '[{"name": "git_repo", "value": "github.com/${{ github.repository }}"}, {"name": "test", "value": \"${tests}\"}, , {"name": "test%%%", "value": "${tests}"}]'
 
       - name: Checkout repo if version is not given as an input
         if: inputs.version == null
